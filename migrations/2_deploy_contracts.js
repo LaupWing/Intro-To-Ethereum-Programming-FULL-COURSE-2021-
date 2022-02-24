@@ -1,5 +1,5 @@
-const TokenFarm = artifacts.require("TokenFarm");
+const TokenFarm = artifacts.require('TokenFarm')
 
-module.exports = function(deployer) {
-  deployer.deploy(TokenFarm);
-};
+module.exports = function (deployer) {
+   deployer.deploy(TokenFarm)
+}

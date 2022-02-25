@@ -23,11 +23,12 @@ contract('Tokenfarm', ([owner, investor]) =>{
       tokenFarm = await TokenFarm.new(dappToken.address, daiToken.address)
 
       // Transfer all Dapp tokens to farm (1 million)
-      // await dappToken.transfer(tokenFarm.address, tokens('1000000'))
-
-      // await dappToken.transfer(investor, tokens('100'), {
-      //    from: owner
-      // })
+      await dappToken.transfer(tokenFarm.address, tokens('1000000'))
+      
+      // Error lies here
+      await dappToken.transfer(investor, tokens('100'), {
+         from: owner
+      })
 
    })
 

@@ -41,7 +41,7 @@ contract TokenFarm{
    // Unstakeing Tokens (Withdraw)
 
    // Issuing Tokens
-   function issueToken() public{
+   function issueTokens() public{
       require(msg.sender == owner, "Caller must be owner");
       for(uint i=0; i <stakers.length; i ++){
          address recipient = stakers[i];

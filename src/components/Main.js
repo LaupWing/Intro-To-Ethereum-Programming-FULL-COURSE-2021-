@@ -2,6 +2,13 @@ import React, { Component } from 'react'
 import dai from '../dai.png'
 
 class Main extends Component {
+   handleSubmit(evt){
+      evt.preventDefault()
+      let amount
+      amount = this.input.value.toString()
+      amount = window.web3.utils.toWei(amount, 'Ether')
+      this.props.stakeTokens(amount)
+   }
    render() {
       return (
          <div id='content' className='mt-3'>
@@ -22,7 +29,7 @@ class Main extends Component {
 
             <div className='card mb-4'>
                <div className='card-body'>
-                  <form className='mb-3'>
+                  <form className='mb-3' onSubmit={this.handleSubmit}>
                      <div>
                         <label className="float-left">
                            <b>Stake Tokens</b>

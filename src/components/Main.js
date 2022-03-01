@@ -40,6 +40,7 @@ class Main extends Component {
                      </div>
                      <div className='input-group mb-4'>
                         <input 
+                           ref={(input)=>{this.input = input}}
                            type="text" 
                            className='form-control form-control-lg'
                            placeholder='0'

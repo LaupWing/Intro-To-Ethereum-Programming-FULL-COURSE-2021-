@@ -14,6 +14,19 @@ class App extends Component {
       await this.loadBlockchainData()
    }
 
+   stakeTokens(amount){
+      this.setState({loading: true})
+      this.state.daiToken.methods.approve(this.state.tokenFarm._address, amount)
+         .send({from: this.state.account})
+         .on('transactionHash', _=>{
+            this.state.tokenFarm.methods.stakeTokens(amount)
+               .send({from: this.state.account})
+               .on('transactionHash', _ =>{
+                  this.setState({loading: false})
+               })
+         })
+   }
+
    async loadBlockchainData(){
       const web3 = window.web3
 
@@ -24,7 +37,7 @@ class App extends Component {
       })
 
       const networkId = await web3.eth.net.getId()
-      console.log(networkId)
+      
       
       const daiTokenData = DaiToken.networks[networkId]
       if(daiTokenData){
@@ -101,6 +114,7 @@ class App extends Component {
             daiTokenBalance={this.state.daiTokenBalance}
             dappTokenBalance={this.state.dappTokenBalance}
             stakingBalance={this.state.stakingBalance}
+            stakeTokens={this.stakeTokens}
          />
       }
 

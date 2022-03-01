@@ -39,31 +39,31 @@ class App extends Component {
          window.alert('DaiToken contract not deployed to detected network')
       }
 
-      const dappTokenData = DappToken.networks[networkId]
-      if(dappTokenData){
-         const dappToken = new web3.eth.Contract(DappToken.abi, dappTokenData.address)
-         const dappTokenBalance = await dappToken.methods.balanceOf(this.state.account).call()
+      // const dappTokenData = DappToken.networks[networkId]
+      // if(dappTokenData){
+      //    const dappToken = new web3.eth.Contract(DappToken.abi, dappTokenData.address)
+      //    const dappTokenBalance = await dappToken.methods.balanceOf(this.state.account).call()
 
-         this.setState({
-            dappToken,
-            dappTokenBalance: dappTokenBalance.toString()
-         })
-      }else{
-         window.alert('DaiToken contract not deployed to detected network')
-      }
+      //    this.setState({
+      //       dappToken,
+      //       dappTokenBalance: dappTokenBalance.toString()
+      //    })
+      // }else{
+      //    window.alert('DaiToken contract not deployed to detected network')
+      // }
 
-      const tokenFarmData = TokenFarm.networks[networkId]
-      if(tokenFarmData){
-         const tokenFarm = new web3.eth.Contract(TokenFarm.abi, tokenFarmData.address)
-         const tokenFarmBalance = await tokenFarm.methods.balanceOf(this.state.account).call()
+      // const tokenFarmData = TokenFarm.networks[networkId]
+      // if(tokenFarmData){
+      //    const tokenFarm = new web3.eth.Contract(TokenFarm.abi, tokenFarmData.address)
+      //    const tokenFarmBalance = await tokenFarm.methods.balanceOf(this.state.account).call()
 
-         this.setState({
-            tokenFarm,
-            tokenFarmBalance: tokenFarmBalance.toString()
-         })
-      }else{
-         window.alert('DaiToken contract not deployed to detected network')
-      }
+      //    this.setState({
+      //       tokenFarm,
+      //       tokenFarmBalance: tokenFarmBalance.toString()
+      //    })
+      // }else{
+      //    window.alert('DaiToken contract not deployed to detected network')
+      // }
       this.setState({loading: false})
    }
 

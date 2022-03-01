@@ -63,6 +63,7 @@ class App extends Component {
       }else{
          window.alert('DaiToken contract not deployed to detected network')
       }
+      this.setState({loading: false})
    }
 
    async loadWeb3(){

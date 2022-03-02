@@ -27,6 +27,18 @@ class App extends Component {
          })
    }
 
+   unstakeTokens(amount){
+      this.setState({
+         loading: true
+      })
+      this.state.tokenFarm.methods.unstakeTokens().send({from: this.state.account})
+         .on('transactionHash', _ =>{
+            this.setState({
+               loading: false
+            })
+         })
+   }
+
    async loadBlockchainData(){
       const web3 = window.web3
 

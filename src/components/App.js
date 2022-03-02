@@ -14,7 +14,7 @@ class App extends Component {
       await this.loadBlockchainData()
    }
 
-   stakeTokens(amount){
+   stakeTokens = (amount)=>{
       this.setState({loading: true})
       this.state.daiToken.methods.approve(this.state.tokenFarm._address, amount)
          .send({from: this.state.account})
@@ -27,7 +27,7 @@ class App extends Component {
          })
    }
 
-   unstakeTokens(amount){
+   unstakeTokens = (amount)=>{
       this.setState({
          loading: true
       })

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import dai from '../dai.png'
 
 class Main extends Component {
-   handleSubmit(evt){
+   handleSubmit = (evt)=>{
       evt.preventDefault()
       let amount
       amount = this.input.value.toString()

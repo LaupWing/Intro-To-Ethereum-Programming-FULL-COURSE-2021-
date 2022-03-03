@@ -27,11 +27,18 @@ contract('Decentragram', ([deployer, author, tipper]) => {
    })
 
    describe('images', async ()=>{
-      let result
+      let result, imageCount
+      const hash = 'abc123'
+
+      before(async ()=>{
+         result = await decentragram.uploadImage(hash, 'Image Description', {from: author})
+         imageCount = await decentragram.imageCount()
+      })
+
       it('create images', async ()=>{
-         result = await decentragram.uploadImage()
-         let image = await decentragram.images(1)
-         console.log(image)
+         assert.equal(imageCount, 1)
+         // const event = result
+         console.log(result)
       })
    })
 

@@ -11,12 +11,23 @@ contract Decentragram {
       string hash;
       string description;
       uint tipAmount;
-      // address author;
-      address payable author;
+      address author;
+      // address payable author;
    }
 
+   event ImageCreated(
+      uint id,
+      string hash,
+      string description,
+      uint tipAmount,
+      address author
+   );
+      // address payable author
+
    function uploadImage(string memory _imageHash, string memory _describtion) public{
-      imageCount + imageCount++;
+      imageCount++;
       images[imageCount] = Image(imageCount, _imageHash, _describtion, 0, msg.sender);
+      
+      emit ImageCreated(imageCount, _imageHash, _describtion, 0, msg.sender);
    }
 }

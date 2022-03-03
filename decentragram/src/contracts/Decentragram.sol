@@ -24,10 +24,15 @@ contract Decentragram {
    );
       // address payable author
 
-   function uploadImage(string memory _imageHash, string memory _describtion) public{
+   function uploadImage(string memory _imageHash, string memory _description) public{
+      require(bytes(_imageHash).length > 0);
+      require(bytes(_description).length > 0);
+      require(msg.sender != address(0x0));
+
+
       imageCount++;
-      images[imageCount] = Image(imageCount, _imageHash, _describtion, 0, msg.sender);
+      images[imageCount] = Image(imageCount, _imageHash, _description, 0, msg.sender);
       
-      emit ImageCreated(imageCount, _imageHash, _describtion, 0, msg.sender);
+      emit ImageCreated(imageCount, _imageHash, _description, 0, msg.sender);
    }
 }

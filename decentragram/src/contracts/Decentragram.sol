@@ -10,4 +10,8 @@ contract Decentragram {
       uint tipAmount;
       address payable author;
    }
+
+   function uploadImage() public{
+      images[1] = Image(1, 'abc', 'Hello World', 0, payable(address(0)));
+   }
 }

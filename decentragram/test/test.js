@@ -46,6 +46,8 @@ contract('Decentragram', ([deployer, author, tipper]) => {
          assert.equal(event.tipAmount, '0', 'tip amount is correct')
          assert.equal(event.author, author, 'Author is correct')
       })
+
+      await decentragram.uploadImage('', 'Image Description', {from: author}).should.be.rejected
    })
 
 })

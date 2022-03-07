@@ -51,7 +51,12 @@ contract('Decentragram', ([deployer, author, tipper]) => {
       })
 
       it('list images', async()=>{
-         
+         const image = await decentragram.images(imageCount)
+         assert.equal(image.id.toNumber(), imageCount.toNumber(), 'Id is correct')
+         assert.equal(image.hash, hash, 'Hash is correct')
+         assert.equal(image.description, 'Image Description', 'Description is correct')
+         assert.equal(image.tipAmount, '0', 'Tip amount is correct')
+         assert.equal(image.author, author, 'Author is correct')
       })
    })
 

@@ -50,6 +50,9 @@ contract('Decentragram', ([deployer, author, tipper]) => {
          await decentragram.uploadImage('Image hash', '', {from: author}).should.be.rejected
       })
 
+      it('list images', async()=>{
+         
+      })
    })
 
 })

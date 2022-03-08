@@ -44,31 +44,14 @@ contract Decentragram {
       emit ImageCreated(imageCount, _imageHash, _description, 0, msg.sender);
    }
 
-   // function tipImageOwner(uint _id) public payable{
-   //    require(_id > 0 && _id <= imageCount);
-   //    Image memory _image = images[_id];
-   //    address _author_address = _image.author;
-   //    address _author = _author_address;
-   //    _author.transfer(msg.value);
-   //    _image.tipAmount = _image.tipAmount + msg.value;
-   //    images[_id] = _image;
+   function tipImageOwner(uint _id) public payable{
+      require(_id > 0 && _id <= imageCount);
+      Image memory _image = images[_id];
+      address payable _author = payable(_image.author);
+      _author.transfer(msg.value);
+      _image.tipAmount = _image.tipAmount + msg.value;
+      images[_id] = _image;
 
-   //    emit ImageTipped(_id, _image.hash, _image.description, _image.tipAmount, _image.author);
-   // }
-    function tipImageOwner(uint _id) public payable {
-    // Make sure the id is valid
-    require(_id > 0 && _id <= imageCount);
-    // Fetch the image
-    Image memory _image = images[_id];
-    // Fetch the author
-    address payable _author = _image.author;
-    // Pay the author by sending them Ether
-    address(_author).transfer(msg.value);
-    // Increment the tip amount
-    _image.tipAmount = _image.tipAmount + msg.value;
-    // Update the image
-    images[_id] = _image;
-    // Trigger an event
-    emit ImageTipped(_id, _image.hash, _image.description, _image.tipAmount, _author);
-  }
+      emit ImageTipped(_id, _image.hash, _image.description, _image.tipAmount, _image.author);
+   }
 }

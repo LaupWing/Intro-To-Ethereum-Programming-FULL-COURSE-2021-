@@ -39,7 +39,10 @@ class App extends Component {
       const networkdData = Decentragram.networks[networkId]
       if(networkdData){
          const decentragram = web3.eth.Contract(Decentragram.abi, networkdData.address)
-         console.log(decentragram)
+         this.setState({
+            decentragram
+         })
+         const imagesCount = await decentragram.methods.imageCount().call()
       }else{
          window.alert('Decentragram network had not been deployed contact the developers')
       }
@@ -49,6 +52,9 @@ class App extends Component {
       super(props)
       this.state = {
          account: '',
+         decentragram: null,
+         loading: true,
+         images: []
       }
    }
 

@@ -122,6 +122,7 @@ class App extends Component {
                : <Main
                   captureFile={this.captureFile}
                   uploadImage={this.uploadImage}
+                  images={this.state.images}
                />
             }
          </div>

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-// import "./ERC721Full.sol";
+import "./ERC721Full.sol";
 
-contract MemoryToken {
+contract MemoryToken is ERC721Full {
   // Code goes here...
    string public name = "Memory Token";
    

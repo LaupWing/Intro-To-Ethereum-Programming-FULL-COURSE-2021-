@@ -58,6 +58,10 @@ class App extends Component {
          }
 
          this.setState({
+            images: this.state.images.sort((a,b)=> b.tipAmount - a.tipAmount)
+         })
+
+         this.setState({
             loading: false
          })
       }else{
@@ -132,6 +136,7 @@ class App extends Component {
                   captureFile={this.captureFile}
                   uploadImage={this.uploadImage}
                   images={this.state.images}
+                  tipImageOwner={this.tipImageOwner}
                />
             }
          </div>

@@ -62,6 +62,7 @@ class App extends Component {
          this.setState({
             buffer: Buffer(reader.result)
          })
+         console.log('Buffer ', this.state.buffer)
       }
    }
 

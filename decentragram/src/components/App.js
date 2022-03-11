@@ -48,9 +48,17 @@ class App extends Component {
             decentragram
          })
          const imagesCount = await decentragram.methods.imageCount().call()
+         this.setState({ imagesCount})
+
+         for (var i = 1; i <= imagesCount; i++){
+            const image = await decentragram.methods.images(i).call()
+            this.setState({
+               images: [...this.state.images, image]
+            })
+         }
+
          this.setState({
-            loading: false,
-            imagesCount
+            loading: false
          })
       }else{
          window.alert('Decentragram network had not been deployed contact the developers')

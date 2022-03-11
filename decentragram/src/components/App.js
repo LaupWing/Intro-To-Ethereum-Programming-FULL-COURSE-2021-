@@ -103,6 +103,15 @@ class App extends Component {
       })
    }
 
+   tipImageOwner = (id, tipAmount) =>{
+      this.setState({loading:true})
+      this.state.decentragram.methods.tipImageOwner(id).send({from: this.state.account, value: tipAmount}).on('transactionHash', _ =>{
+         this.setState({
+            loading: false
+         })
+      })
+   }
+
    constructor(props) {
       super(props)
       this.state = {

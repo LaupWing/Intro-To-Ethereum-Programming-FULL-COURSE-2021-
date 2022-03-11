@@ -66,6 +66,30 @@ class App extends Component {
       }
    }
 
+   uploadImage = description =>{
+      console.log('Submitting file to ipfs...')
+
+      ipfs.add(this.state.buffer, (error, result)=>{
+         console.log('Ipfs Result', result)
+         if(error){
+            console.error(error)
+            return
+         }
+
+         this.setState({
+            loading: true
+         })
+         // this.state.decentragram.methods.uploadImage(result[0].hash, description).send({
+         //    from: this.state.account
+         // })
+         // .on('transactionHash', _ =>{
+         //    this.setState({
+         //       loading: false
+         //    })
+         // })
+      })
+   }
+
    constructor(props) {
       super(props)
       this.state = {

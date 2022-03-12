@@ -6,6 +6,11 @@ import brain from '../brain.png'
 
 class App extends Component {
 
+   async componentDidMount(){
+      await this.loadWeb3()
+      await this.loadBlockChainData()
+   }
+
    async loadWeb3(){
       if(window.ethereum){
          window.web3 = new Web3(window.ethereum)
@@ -17,6 +22,14 @@ class App extends Component {
       else{
          window.alert('Non-Ethereum browser detected. You should consider trying MetaMask')
       }
+   }
+
+   async loadBlockChainData(){
+      const web3 = window.web3
+      const accounts = await web3.eth.getAccounts()
+      this.setState({
+         account: accounts[0]
+      })
    }
 
    constructor(props) {

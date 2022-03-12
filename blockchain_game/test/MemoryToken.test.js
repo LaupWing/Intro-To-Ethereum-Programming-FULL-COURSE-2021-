@@ -26,5 +26,10 @@ contract('Memory Token', (accounts) => {
          const name = await token.name()
          assert.equal(name, 'Memory Token')
       })
+
+      it('has a symbol', async ()=>{
+         const symbol = await token.symbol()
+         assert.equal(symbol, 'MEMORY')
+      })
    })
 })

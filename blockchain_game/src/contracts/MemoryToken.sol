@@ -4,9 +4,12 @@ import "./ERC721Full.sol";
 
 contract MemoryToken is ERC721Full {
   // Code goes here...
-   constructor() ERC721Full("MemoryToken", "MEMORY") public{
+   constructor() ERC721Full("Memory Token", "MEMORY") public{
 
    }
-   
-   
+
+   function mint(address _to, string memory _tokenURI) public returns(bool){
+      uint _tokenId = totalSupply().add(1);
+      _mint(_to, _tokenId);
+   }   
 }

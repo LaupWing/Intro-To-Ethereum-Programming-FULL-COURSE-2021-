@@ -46,7 +46,7 @@ contract('Memory Token', (accounts) => {
 
          result = await token.ownerOf('1')
          assert.equal(result.toString(), accounts[0].toString(), 'ownerOf is correct')
-         result = await tokenOfOwnerByIndex(accounts[0], 0)
+         result = await token.tokenOfOwnerByIndex(accounts[0], 0)
 
          let balanceOf = await token.balanceOf(accounts[0])
          let tokenIds = []

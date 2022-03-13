@@ -38,7 +38,17 @@ class App extends Component {
          const abi = MemoryToken.abi
          const address = networkData.address
          const token = new web3.eth.Contract(abi, address)
-         this.setState({token})
+         const totalSupply = await token.methods.totalSupply.call()
+         this.setState({token, totalSupply})
+
+         let balanceOf = await token.methods.balanceOf(accounts[0]).call()
+         for(let i=0; i < balanceOf; i++){
+            let id = await token.methods.tokenOfOwnerByIndex(accounts[0], i).call()
+            let tokenURI = await token.methods.tokenURI(id).call()
+            this.setState({
+               tokenURIs: [...this.state.tokenURIs, tokenURI]
+            })
+         }
       }else{
          window.alert('Smart contract is not deployed to detected network')
       }
@@ -48,7 +58,9 @@ class App extends Component {
       super(props)
       this.state = {
          account: '0x0',
-         token: {}
+         token: null,
+         totalSupply: 0,
+         tokenURIs: []
       }
    }
 

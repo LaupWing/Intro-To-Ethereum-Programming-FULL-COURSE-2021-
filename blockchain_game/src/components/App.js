@@ -4,27 +4,79 @@ import './App.css';
 import MemoryToken from '../abis/MemoryToken.json'
 import brain from '../brain.png'
 
+const CARD_ARRAY = [
+   {
+      name: 'fries',
+      img: '/images/fries.png'
+   },
+   {
+      name: 'cheeseburger',
+      img: '/images/cheeseburger.png'
+   },
+   {
+      name: 'ice-cream',
+      img: '/images/ice-cream.png'
+   },
+   {
+      name: 'pizza',
+      img: '/images/pizza.png'
+   },
+   {
+      name: 'milkshake',
+      img: '/images/milkshake.png'
+   },
+   {
+      name: 'hotdog',
+      img: '/images/hotdog.png'
+   },
+   {
+      name: 'fries',
+      img: '/images/fries.png'
+   },
+   {
+      name: 'cheeseburger',
+      img: '/images/cheeseburger.png'
+   },
+   {
+      name: 'ice-cream',
+      img: '/images/ice-cream.png'
+   },
+   {
+      name: 'pizza',
+      img: '/images/pizza.png'
+   },
+   {
+      name: 'milkshake',
+      img: '/images/milkshake.png'
+   },
+   {
+      name: 'hotdog',
+      img: '/images/hotdog.png'
+   }
+]
+
+
 class App extends Component {
 
-   async componentDidMount(){
+   async componentDidMount() {
       await this.loadWeb3()
       await this.loadBlockChainData()
    }
 
-   async loadWeb3(){
-      if(window.ethereum){
+   async loadWeb3() {
+      if (window.ethereum) {
          window.web3 = new Web3(window.ethereum)
          await window.ethereum.enable()
       }
-      else if(window.web3){
+      else if (window.web3) {
          window.web3 = new Web3(window.web3.currentProvider)
       }
-      else{
+      else {
          window.alert('Non-Ethereum browser detected. You should consider trying MetaMask')
       }
    }
 
-   async loadBlockChainData(){
+   async loadBlockChainData() {
       const web3 = window.web3
       const accounts = await web3.eth.getAccounts()
       this.setState({
@@ -34,22 +86,22 @@ class App extends Component {
       const networkId = await web3.eth.net.getId()
       const networkData = MemoryToken.networks[networkId]
 
-      if(networkData){
+      if (networkData) {
          const abi = MemoryToken.abi
          const address = networkData.address
          const token = new web3.eth.Contract(abi, address)
          const totalSupply = await token.methods.totalSupply.call()
-         this.setState({token, totalSupply})
+         this.setState({ token, totalSupply })
 
          let balanceOf = await token.methods.balanceOf(accounts[0]).call()
-         for(let i=0; i < balanceOf; i++){
+         for (let i = 0; i < balanceOf; i++) {
             let id = await token.methods.tokenOfOwnerByIndex(accounts[0], i).call()
             let tokenURI = await token.methods.tokenURI(id).call()
             this.setState({
                tokenURIs: [...this.state.tokenURIs, tokenURI]
             })
          }
-      }else{
+      } else {
          window.alert('Smart contract is not deployed to detected network')
       }
    }

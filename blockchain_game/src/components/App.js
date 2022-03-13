@@ -61,6 +61,9 @@ class App extends Component {
    async componentDidMount() {
       await this.loadWeb3()
       await this.loadBlockChainData()
+      this.setState({
+         cardArray: CARD_ARRAY.sort(()=> 0.5 - Math.random())
+      })
    }
 
    async loadWeb3() {
@@ -106,6 +109,19 @@ class App extends Component {
       }
    }
 
+   chooseImage = (cardId) =>{
+      return window.location.origin + '/images/blank.png'
+      cardId = cardId.toString()
+      if(this.state.cardsWon.includes(cardId)){
+         return window.location.origin + '/images/white.png'
+      }
+      else if(this.state.cardsChosenId.includes(cardId)){
+         return CARD_ARRAY[cardId].img
+      }else{
+         return window.location.origin + '/images/blank.png'
+      }
+   }
+
    constructor(props) {
       super(props)
       this.state = {
@@ -147,7 +163,22 @@ class App extends Component {
 
                         <div className="grid mb-4" >
 
-                           {/* Code goes here... */}
+                           {this.state.cardArray.map((card, key)=>{
+                              return (
+                                 <img 
+                                    src={this.chooseImage(key)} 
+                                    data-id={key}
+                                    key={key}
+                                    alt=""
+                                    onClick={event=>{
+                                       let cardId = event.target.getAttriubte('data-id')
+                                       if(!this.state.cardsWon.includes(cardId.toString())){
+                                          this.flipCard(cardId)
+                                       }
+                                    }} 
+                                 />
+                              )
+                           })}
 
                         </div>
 

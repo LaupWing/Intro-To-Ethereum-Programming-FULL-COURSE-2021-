@@ -30,12 +30,25 @@ class App extends Component {
       this.setState({
          account: accounts[0]
       })
+
+      const networkId = await web3.eth.net.getId()
+      const networkData = MemoryToken.networks[networkId]
+
+      if(networkData){
+         const abi = MemoryToken.abi
+         const address = networkData.address
+         const token = new web3.eth.Contract(abi, address)
+         this.setState({token})
+      }else{
+         window.alert('Smart contract is not deployed to detected network')
+      }
    }
 
    constructor(props) {
       super(props)
       this.state = {
-         account: '0x0'
+         account: '0x0',
+         token: {}
       }
    }
 

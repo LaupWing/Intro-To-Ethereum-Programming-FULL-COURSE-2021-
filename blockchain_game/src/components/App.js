@@ -60,7 +60,11 @@ class App extends Component {
          account: '0x0',
          token: null,
          totalSupply: 0,
-         tokenURIs: []
+         tokenURIs: [],
+         cardArray: [],
+         cardsChosen: [],
+         cardsChosenId: [],
+         cardsWon: []
       }
    }
 

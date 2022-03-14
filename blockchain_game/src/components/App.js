@@ -121,20 +121,38 @@ class App extends Component {
       }
    }
 
+   checkForMatch = async ()=>{
+      const optionOneId = this.state.cardsChosenId[0]
+      const optionTwoId = this.state.cardsChosenId[1]
+
+      if(optionOneId === optionTwoId){
+         alert('You have clicked the same image')
+      }else if(this.state.cardsChosen[0] === this.state.cardsChosen[1]){
+         this.setState({
+            cardsWon: [...this.state.cardsWon, optionOneId, optionTwoId]
+         })
+      }else{
+         alert('Sorry try again')
+      }
+      this.setState({
+         cardsChosen: [],
+         cardsChosenId: []
+      })
+      if(this.state.cardsWon.length === CARD_ARRAY.length){
+         alert('Congratulations! You found them all!')
+      }
+   }
+
    chooseImage = (cardId) =>{
       cardId = cardId.toString()
-      if(this.state.cardsChosenId.includes(cardId)){
-         return CARD_ARRAY[cardId].img
+      if(this.state.cardsWon.includes(cardId)){
+         return window.location.origin + '/images/white.png'
       }
-      return window.location.origin + '/images/blank.png'
-      // if(this.state.cardsWon.includes(cardId)){
-      //    return window.location.origin + '/images/white.png'
-      // }
-      // else if(this.state.cardsChosenId.includes(cardId)){
-      //    return CARD_ARRAY[cardId].img
-      // }else{
-      //    return window.location.origin + '/images/blank.png'
-      // }
+      else if(this.state.cardsChosenId.includes(cardId)){
+         return CARD_ARRAY[cardId].img
+      }else{
+         return window.location.origin + '/images/blank.png'
+      }
    }
 
    constructor(props) {
@@ -186,7 +204,7 @@ class App extends Component {
                                     key={key}
                                     alt=""
                                     onClick={event=>{
-                                       const cardId = event.target.getAttribute('data-id')
+                                       let cardId = event.target.getAttribute('data-id')
                                        if(!this.state.cardsWon.includes(cardId.toString())){
                                           this.flipCard(cardId)
                                        }

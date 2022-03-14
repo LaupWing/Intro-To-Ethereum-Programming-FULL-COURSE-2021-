@@ -93,8 +93,9 @@ class App extends Component {
          const abi = MemoryToken.abi
          const address = networkData.address
          const token = new web3.eth.Contract(abi, address)
+         this.setState({ token })
          const totalSupply = await token.methods.totalSupply.call()
-         this.setState({ token, totalSupply })
+         this.setState({ totalSupply })
 
          let balanceOf = await token.methods.balanceOf(accounts[0]).call()
          for (let i = 0; i < balanceOf; i++) {
@@ -154,6 +155,7 @@ class App extends Component {
 
    chooseImage = (cardId) =>{
       cardId = cardId.toString()
+      console.log(cardId)
       if(this.state.cardsWon.includes(cardId)){
          return window.location.origin + '/images/white.png'
       }

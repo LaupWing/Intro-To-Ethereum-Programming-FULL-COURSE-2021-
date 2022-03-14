@@ -128,9 +128,18 @@ class App extends Component {
       if(optionOneId === optionTwoId){
          alert('You have clicked the same image')
       }else if(this.state.cardsChosen[0] === this.state.cardsChosen[1]){
-         this.setState({
-            cardsWon: [...this.state.cardsWon, optionOneId, optionTwoId]
-         })
+         alert('You have found a match')
+         this.state.token.methods.mint(
+            this.state.account,
+            window.location.origin + CARD_ARRAY[optionOneId].img.toString()
+         )
+            .send({from: this.state.account})
+            .on('transactionHash', _ =>{
+               this.setState({
+                  cardsWon: [...this.state.cardsWon, optionOneId, optionTwoId],
+                  tokenURIs: [...this.state.tokenURIs, CARD_ARRAY[optionOneId].img]
+               })
+            })
       }else{
          alert('Sorry try again')
       }

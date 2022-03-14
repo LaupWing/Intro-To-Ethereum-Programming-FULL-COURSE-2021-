@@ -109,17 +109,32 @@ class App extends Component {
       }
    }
 
+   flipCard = async (cardId)=>{
+      let alreadyChosen = this.state.cardsChosen.length
+      this.setState({
+         cardsChosen: [...this.state.cardsChosen, this.state.cardArray[cardId].name],
+         cardsChosenId: [this.state.cardsChosenId, cardId]
+      })
+
+      if(alreadyChosen === 1){
+         setTimeout(this.checkForMatch, 100)
+      }
+   }
+
    chooseImage = (cardId) =>{
-      return window.location.origin + '/images/blank.png'
       cardId = cardId.toString()
-      if(this.state.cardsWon.includes(cardId)){
-         return window.location.origin + '/images/white.png'
-      }
-      else if(this.state.cardsChosenId.includes(cardId)){
+      if(this.state.cardsChosenId.includes(cardId)){
          return CARD_ARRAY[cardId].img
-      }else{
-         return window.location.origin + '/images/blank.png'
       }
+      return window.location.origin + '/images/blank.png'
+      // if(this.state.cardsWon.includes(cardId)){
+      //    return window.location.origin + '/images/white.png'
+      // }
+      // else if(this.state.cardsChosenId.includes(cardId)){
+      //    return CARD_ARRAY[cardId].img
+      // }else{
+      //    return window.location.origin + '/images/blank.png'
+      // }
    }
 
    constructor(props) {
@@ -171,7 +186,7 @@ class App extends Component {
                                     key={key}
                                     alt=""
                                     onClick={event=>{
-                                       let cardId = event.target.getAttriubte('data-id')
+                                       const cardId = event.target.getAttribute('data-id')
                                        if(!this.state.cardsWon.includes(cardId.toString())){
                                           this.flipCard(cardId)
                                        }

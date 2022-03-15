@@ -38,32 +38,45 @@ class App extends Component {
       this.setState({
          account: accounts[0]
       })
+      //Get network ID
+      //Get network data
       const networkId = await web3.eth.net.getId()
       const networkData = DVideo.networks[networkId]
+      //Check if net data exists, then
+      //Assign dvideo contract to a variable
+      //Add dvideo to the state
       if(networkData){
          const dvideo = new web3.eth.Contract(DVideo.abi, networkData.address)
          this.setState({
             dvideo
          })
+         //Check videoAmounts
+         const videosCount = await dvideo.methods.videoCount().call()
+         //Add videAmounts to the state
+         this.setState({videosCount})
+
+         //Iterate throught videos and add them to the state (by newest)
+         for(var i=videosCount; i>=1; i++){
+            const video = await dvideo.methods.videos(i).call()
+            this.setState({
+               videos: [this.state.videos, video]
+            })
+         }
+         
+         //Set latest video and it's title to view as default 
+         const latest = await dvideo.methods.videos(videosCount).call()
+         this.setState({
+            currentHash: latest.hash,
+            currentTitle: latest.title
+         })
+         //Set loading state to false
+         this.setState({
+            loading: false
+         })
       }else{
+         //If network data doesn't exisits, log error
          window.alert('DVideo contract not deployed to detected network.')
       }
-      //Get network ID
-      //Get network data
-      //Check if net data exists, then
-      //Assign dvideo contract to a variable
-      //Add dvideo to the state
-
-      //Check videoAmounts
-      //Add videAmounts to the state
-
-      //Iterate throught videos and add them to the state (by newest)
-
-
-      //Set latest video and it's title to view as default 
-      //Set loading state to false
-
-      //If network data doesn't exisits, log error
    }
 
    //Get video

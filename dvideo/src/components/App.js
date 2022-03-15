@@ -11,32 +11,36 @@ const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' 
 
 class App extends Component {
 
-  async componentWillMount() {
-    await this.loadWeb3()
-    await this.loadBlockchainData()
-  }
+   async componentWillMount() {
+      await this.loadWeb3()
+      await this.loadBlockchainData()
+   }
 
-  async loadWeb3() {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum)
-      await window.ethereum.enable()
-    }
-    else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider)
-    }
-    else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
-    }
-  }
+   async loadWeb3() {
+      if (window.ethereum) {
+         window.web3 = new Web3(window.ethereum)
+         await window.ethereum.enable()
+      }
+      else if (window.web3) {
+         window.web3 = new Web3(window.web3.currentProvider)
+      }
+      else {
+         window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+      }
+   }
 
-  async loadBlockchainData() {
-    const web3 = window.web3
-    //Load accounts
-    //Add first account the the state
-
-    //Get network ID
-    //Get network data
-    //Check if net data exists, then
+   async loadBlockchainData() {
+      const web3 = window.web3
+      //Load accounts
+      const accounts = await web3.eth.getAccounts()
+      console.log(accounts)
+      //Add first account the the state
+      this.setState({
+         account: accounts[0]
+      })
+      //Get network ID
+      //Get network data
+      //Check if net data exists, then
       //Assign dvideo contract to a variable
       //Add dvideo to the state
 
@@ -50,48 +54,49 @@ class App extends Component {
       //Set loading state to false
 
       //If network data doesn't exisits, log error
-  }
+   }
 
-  //Get video
-  captureFile = event => {
+   //Get video
+   captureFile = event => {
 
-  }
+   }
 
-  //Upload video
-  uploadVideo = title => {
+   //Upload video
+   uploadVideo = title => {
 
-  }
+   }
 
-  //Change Video
-  changeVideo = (hash, title) => {
+   //Change Video
+   changeVideo = (hash, title) => {
 
-  }
+   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      loading: false
-      //set states
-    }
+   constructor(props) {
+      super(props)
+      this.state = {
+         loading: false,
+         account: '0x0'
+         //set states
+      }
 
-    //Bind functions
-  }
+      //Bind functions
+   }
 
-  render() {
-    return (
-      <div>
-        <Navbar 
-          //Account
-        />
-        { this.state.loading
-          ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
-          : <Main
-              //states&functions
+   render() {
+      return (
+         <div>
+            <Navbar
+               account={this.state.account}
             />
-        }
-      </div>
-    );
-  }
+            {this.state.loading
+               ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
+               : <Main
+               //states&functions
+               />
+            }
+         </div>
+      );
+   }
 }
 
 export default App;

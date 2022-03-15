@@ -31,6 +31,8 @@ contract DVideo {
       public
    {
       require(bytes(_videoHash).length > 0);
+      require(bytes(_title).length > 0);
+      require(msg.sender != address(0));
       // Make sure the video hash exists
       // Make sure video title exists
       // Make sure uploader address exists

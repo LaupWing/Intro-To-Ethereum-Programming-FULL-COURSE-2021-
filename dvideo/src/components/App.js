@@ -38,6 +38,16 @@ class App extends Component {
       this.setState({
          account: accounts[0]
       })
+      const networkId = await web3.eth.net.getId()
+      const networkData = DVideo.networks[networkId]
+      if(networkData){
+         const dvideo = new web3.eth.Contract(DVideo.abi, networkData.address)
+         this.setState({
+            dvideo
+         })
+      }else{
+         window.alert('DVideo contract not deployed to detected network.')
+      }
       //Get network ID
       //Get network data
       //Check if net data exists, then
@@ -75,7 +85,12 @@ class App extends Component {
       super(props)
       this.state = {
          loading: false,
-         account: ''
+         account: '',
+         dvideo: null,
+         videos: [],
+         loading: true,
+         currentHash: null,
+         currentTitle: null
          //set states
       }
 

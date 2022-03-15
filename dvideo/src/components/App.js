@@ -75,7 +75,7 @@ class App extends Component {
       super(props)
       this.state = {
          loading: false,
-         account: '0x0'
+         account: ''
          //set states
       }
 

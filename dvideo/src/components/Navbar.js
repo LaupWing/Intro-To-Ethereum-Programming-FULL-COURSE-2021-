@@ -21,8 +21,16 @@ class Navbar extends Component {
             <small className="text-secondary">
               <small id="account">{this.props.account}</small>
             </small>
-              {/* Return Account&Identicon... */}
-              {/* <b className="text-white">0x0</b> */}
+               
+            {this.props.account && (
+               <img 
+                  className='ml-2'
+                  src={`data:image/png;base64,${new Identicon(this.props.account, 30).toString()}`} 
+                  width='30'
+                  height='30'
+                  alt="Something meaningful" 
+               />
+            )}
           </li>
         </ul>
       </nav>

@@ -30,6 +30,7 @@ contract DVideo {
    function uploadVideo(string memory _videoHash, string memory _title)
       public
    {
+      require(bytes(_videoHash).length > 0);
       // Make sure the video hash exists
       // Make sure video title exists
       // Make sure uploader address exists
@@ -38,7 +39,7 @@ contract DVideo {
 
       // Add video to the contract
       videos[videoCount] = Video(videoCount, _videoHash, _title, msg.sender);
-      
+
       // Trigger an event
       emit VideoUploaded(videoCount, _videoHash, _title, msg.sender);
    }

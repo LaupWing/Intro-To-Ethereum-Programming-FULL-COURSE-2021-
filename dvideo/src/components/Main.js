@@ -18,7 +18,9 @@ class Main extends Component {
                <div className="col-md-2 overflow-auto text-center" style={{ maxHeight: '768px', minWidth: '175px' }}>
                   <h5><b>Share Video</b></h5>
                   <form onSubmit={(event) => {
-                     {/* Upload Video...*/ }
+                     event.preventDefault()
+                     const title = this.videoTitle.value
+                     this.props.uploadVideo(title)
                   }} >
                      &nbsp;
                      <input 
@@ -32,6 +34,7 @@ class Main extends Component {
                            type="text" 
                            className='form-control-sm'
                            id='videoTitle'
+                           ref={(input)=> this.videoTitle = input}
                            placeholder='Title...'
                            required
                         />

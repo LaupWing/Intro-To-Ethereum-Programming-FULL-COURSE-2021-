@@ -94,7 +94,16 @@ class App extends Component {
 
    //Upload video
    uploadVideo = title => {
-
+      ipfs.add(this.state.buffer, (err, res)=>{
+         if(error){
+            console.error(err)
+            return
+         }
+         this.setState({loading: true})
+         this.state.dvideo.methods
+            .uploadVideo(result[0].hash, title).send({from: this.state.account})
+            .on('transactionHash', _=>this.setState({loading: false}))
+      })
    }
 
    //Change Video
@@ -128,6 +137,7 @@ class App extends Component {
                ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
                : <Main
                   captureFile={this.captureFile}
+                  uploadVideo={this.uploadVideo}
                //states&functions
                />
             }

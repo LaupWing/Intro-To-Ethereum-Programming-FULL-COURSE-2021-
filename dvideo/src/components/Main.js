@@ -10,10 +10,15 @@ class Main extends Component {
             <br></br>
             <div className="row">
                <div className="col-md-10">
-                  <div className="embed-responsive embed-responsive-16by9" style={{ maxHeight: '768px' }}>
-                     {/* Video... */}
+                  <div 
+                     className="embed-responsive embed-responsive-16by9" style={{ maxHeight: '768px' }}
+                  >
+                     <video 
+                        src={`https://ipfs.infura.io/ipfs/${this.props.currentHash}`}
+                        controls
+                     ></video>  
                   </div>
-                  <h3>{/* Code... */}</h3>
+                  <h3><b><i>{this.props.currentTitle}</i></b></h3>
                </div>
                <div className="col-md-2 overflow-auto text-center" style={{ maxHeight: '768px', minWidth: '175px' }}>
                   <h5><b>Share Video</b></h5>

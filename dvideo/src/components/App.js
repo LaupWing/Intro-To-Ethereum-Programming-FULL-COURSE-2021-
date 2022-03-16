@@ -138,6 +138,8 @@ class App extends Component {
                : <Main
                   captureFile={this.captureFile}
                   uploadVideo={this.uploadVideo}
+                  currentHash={this.currentHash}
+                  currentTitle={this.currentTitle}
                //states&functions
                />
             }

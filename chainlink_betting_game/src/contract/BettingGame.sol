@@ -4,8 +4,8 @@
  *     - Rinkeby ETH faucet: https://faucet.rinkeby.io/
  *     - Rinkeby LINK faucet: https://rinkeby.chain.link/
  */
-
-pragma solidity 0.6.6;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.4.22 <0.9.0;
 
 import "https://raw.githubusercontent.com/smartcontractkit/chainlink/master/evm-contracts/src/v0.6/VRFConsumerBase.sol";
 

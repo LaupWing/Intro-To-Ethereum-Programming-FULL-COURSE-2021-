@@ -4,12 +4,25 @@
  *     - Rinkeby ETH faucet: https://faucet.rinkeby.io/
  *     - Rinkeby LINK faucet: https://rinkeby.chain.link/
  */
-// SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+
+/** !UPDATE
+ * min. bet >= $1 in Ethereum
+ *
+ * ETH/USD price will be received from Chainlink Oracles prices feed aggregator.
+ * more: https://docs.chain.link/docs/using-chainlink-reference-contracts.
+ */
+pragma solidity 0.6.6;
 
 import "https://raw.githubusercontent.com/smartcontractkit/chainlink/master/evm-contracts/src/v0.6/VRFConsumerBase.sol";
+import "https://github.com/smartcontractkit/chainlink/blob/master/evm-contracts/src/v0.6/interfaces/AggregatorV3Interface.sol"; /* !UPDATE, import aggregator contract */
 
 contract BettingGame is VRFConsumerBase {
+    /** !UPDATE
+     *
+     * assign an aggregator contract to the variable.
+     */
+    AggregatorV3Interface internal ethUsd;
+
     uint256 internal fee;
     uint256 public randomResult;
 
@@ -17,9 +30,11 @@ contract BettingGame is VRFConsumerBase {
     address constant VFRC_address = 0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B; // VRF Coordinator
     address constant LINK_address = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709; // LINK token
 
-    //declaring 50% chance, (0.5*uint256)~
+    //declaring 50% chance, (0.5*(uint256+1))
     uint256 constant half =
         57896044618658097711785492504343953926634992332820282019728792003956564819968;
+
+    //keyHash - one of the component from which will be generated final random value by Chainlink VFRC.
     bytes32 internal constant keyHash =
         0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311;
 
@@ -60,11 +75,21 @@ contract BettingGame is VRFConsumerBase {
     );
 
     /**
-     * Constructor inherits VRFConsumerBase
+     * Constructor inherits VRFConsumerBase.
      */
     constructor() public VRFConsumerBase(VFRC_address, LINK_address) {
         fee = 0.1 * 10**18; // 0.1 LINK
         admin = msg.sender;
+
+        /** !UPDATE
+         *
+         * assign ETH/USD Rinkeby contract address to the aggregator variable.
+         * more: https://docs.chain.link/docs/ethereum-addresses
+         */
+
+        ethUsd = AggregatorV3Interface(
+            0x8A753747A1Fa494EC906cE90E9f37563A8AF630e
+        );
     }
 
     /* Allows this contract to receive payments */
@@ -72,21 +97,57 @@ contract BettingGame is VRFConsumerBase {
         emit Received(msg.sender, msg.value);
     }
 
+    /** !UPDATE
+     *
+     * Returns latest ETH/USD price from Chainlink oracles.
+     */
+    function ethInUsd() public view returns (int256) {
+        (
+            uint80 roundId,
+            int256 price,
+            uint256 startedAt,
+            uint256 timeStamp,
+            uint80 answeredInRound
+        ) = ethUsd.latestRoundData();
+
+        return price;
+    }
+
+    /** !UPDATE
+     *
+     * ethUsd - latest price from Chainlink oracles (ETH in USD * 10**8).
+     * weiUsd - USD in Wei, received by dividing:
+     *          ETH in Wei (converted to compatibility with etUsd (10**18 * 10**8)),
+     *          by ethUsd.
+     */
+    function weiInUsd() public view returns (uint256) {
+        int256 ethUsd = ethInUsd();
+        int256 weiUsd = 10**26 / ethUsd;
+
+        return uint256(weiUsd);
+    }
+
     /**
-     * Taking bets function
+     * Taking bets function.
      * By winning, user 2x his betAmount.
      * Chances to win and lose are the same.
      */
     function game(uint256 bet, uint256 seed) public payable returns (bool) {
+        /** !UPDATE
+         *
+         * Checking if msg.value is higher or equal than $1.
+         */
+        uint256 weiUsd = weiInUsd();
+        require(msg.value >= weiUsd, "Error, msg.value must be >= $1");
+
         //bet=0 is low, refers to 1-3  dice values
         //bet=1 is high, refers to 4-6 dice values
         require(bet <= 1, "Error, accept only 0 and 1");
-        //min. betAmount = 1 wei
-        require(msg.value != 0, "Error, msg.value must be higher that 0");
+
         //vault balance must be at least equal to msg.value
         require(
             address(this).balance >= msg.value,
-            "Error insufficent vault balance"
+            "Error, insufficent vault balance"
         );
 
         //each bet has unique id
@@ -102,7 +163,7 @@ contract BettingGame is VRFConsumerBase {
     }
 
     /**
-     * Request for randomness
+     * Request for randomness.
      */
     function getRandomNumber(uint256 userProvidedSeed)
         internal
@@ -110,13 +171,13 @@ contract BettingGame is VRFConsumerBase {
     {
         require(
             LINK.balanceOf(address(this)) > fee,
-            "Not enough LINK - fill contract with faucet"
+            "Error, not enough LINK - fill contract with faucet"
         );
         return requestRandomness(keyHash, fee, userProvidedSeed);
     }
 
     /**
-     * Callback function used by VRF Coordinator
+     * Callback function used by VRF Coordinator.
      */
     function fulfillRandomness(bytes32 requestId, uint256 randomness)
         internal
@@ -129,13 +190,15 @@ contract BettingGame is VRFConsumerBase {
     }
 
     /**
-     * Send reward to the winers
+     * Send rewards to the winners.
      */
     function verdict(uint256 random) public payable onlyVFRC {
-        //take bets from latest betting round one by one
+        //check bets from latest betting round, one by one
         for (uint256 i = lastGameId; i < gameId; i++) {
+            //reset winAmount for current user
             uint256 winAmount = 0;
-            //if user won, then he receives 2x of his betting amount
+
+            //if user wins, then receives 2x of their betting amount
             if (
                 (random >= half && games[i].bet == 1) ||
                 (random < half && games[i].bet == 0)
@@ -159,14 +222,14 @@ contract BettingGame is VRFConsumerBase {
     }
 
     /**
-     * Withdraw LINK from this contract (admin option)
+     * Withdraw LINK from this contract (admin option).
      */
     function withdrawLink(uint256 amount) external onlyAdmin {
-        require(LINK.transfer(msg.sender, amount), "Unable to transfer");
+        require(LINK.transfer(msg.sender, amount), "Error, unable to transfer");
     }
 
     /**
-     * Withdraw Ether from this contract (admin option)
+     * Withdraw Ether from this contract (admin option).
      */
     function withdrawEther(uint256 amount) external payable onlyAdmin {
         require(

@@ -18,7 +18,22 @@ contract DStorage {
 
    constructor() public {}
 
-   function uploadFile() public{
-      files[1] = File(1, 'abc123', 1024, 'png','Foobar', 'Foo bar baz', 23432432, payable(0x0));
+   function uploadFile(
+      string memory _filehash,
+      uint _fileSize,
+      string memory _fileType,
+      string memory _filename,
+      string memory _fileDescription
+   ) public{
+      files[1] = File(
+         1, 
+         _filehash, 
+         _fileSize, 
+         _fileType,
+         _filename, 
+         _fileDescription, 
+         23432432, 
+         payable(msg.sender)
+      );
    }
 }

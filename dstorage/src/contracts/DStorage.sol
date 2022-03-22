@@ -17,6 +17,17 @@ contract DStorage {
       address payable uploader;
    }
 
+   event FileUploaded (
+      uint fileId,
+      string fileHash,
+      uint fileSize,
+      string fileType,
+      string fileName,
+      string fileDescription,
+      uint uploadTime,
+      address payable uploader
+   );
+
    constructor() public {}
 
    function uploadFile(
@@ -35,6 +46,17 @@ contract DStorage {
       fileCount ++;
 
       files[fileCount] = File(
+         fileCount, 
+         _fileHash, 
+         _fileSize, 
+         _fileType,
+         _fileName, 
+         _fileDescription, 
+         block.timestamp, 
+         payable(msg.sender)
+      );
+
+      emit FileUploaded(
          fileCount, 
          _fileHash, 
          _fileSize, 

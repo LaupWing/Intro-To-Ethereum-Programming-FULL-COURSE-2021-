@@ -3,6 +3,7 @@ pragma solidity >=0.4.22 <0.9.0;
 
 contract DStorage {
    string public name = 'DStorage';
+   uint public fileCount = 0;
    mapping(uint => File) public files;
 
    struct File {
@@ -19,20 +20,28 @@ contract DStorage {
    constructor() public {}
 
    function uploadFile(
-      string memory _filehash,
+      string memory _fileHash,
       uint _fileSize,
       string memory _fileType,
-      string memory _filename,
+      string memory _fileName,
       string memory _fileDescription
    ) public{
-      files[1] = File(
-         1, 
-         _filehash, 
+      require(bytes(_fileHash).length >  0);
+      require(bytes(_fileType).length >  0);
+      require(bytes(_fileDescription).length >  0);
+      require(bytes(_fileName).length >  0);
+      require(msg.sender != address(0));
+
+      fileCount ++;
+
+      files[fileCount] = File(
+         fileCount, 
+         _fileHash, 
          _fileSize, 
          _fileType,
-         _filename, 
+         _fileName, 
          _fileDescription, 
-         23432432, 
+         block.timestamp, 
          payable(msg.sender)
       );
    }

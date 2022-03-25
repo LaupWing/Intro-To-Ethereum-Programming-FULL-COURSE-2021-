@@ -53,7 +53,7 @@ contract DStorage {
          _fileName, 
          _fileDescription, 
          block.timestamp, 
-         payable(msg.sender)
+         address(uint160(msg.sender))
       );
 
       emit FileUploaded(
@@ -64,7 +64,7 @@ contract DStorage {
          _fileName, 
          _fileDescription, 
          block.timestamp, 
-         payable(msg.sender)
+         address(uint160(msg.sender))
       );
    }
 }

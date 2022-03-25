@@ -1,4 +1,4 @@
-//import DStorage from '../abis/DStorage.json'
+import DStorage from '../abis/DStorage.json'
 import React, { Component } from 'react';
 import Navbar from './Navbar'
 import Main from './Main'
@@ -80,7 +80,12 @@ class App extends Component {
    constructor(props) {
       super(props)
       this.state = {
-         loading: true
+         loading: true,
+         account: '',
+         dstorage: null,
+         files: [],
+         type: null,
+         name: null
       }
 
       //Bind functions

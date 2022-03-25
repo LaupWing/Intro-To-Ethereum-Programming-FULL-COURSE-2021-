@@ -32,20 +32,27 @@ class App extends Component {
       const accounts = await web3.eth.getAccounts()
       this.setState({account: accounts[0]})
 
-      //Load account
-
-      //Network ID
-
-      //IF got connection, get data from contracts
-      //Assign contract
-
-      //Get files amount
-
-      //Load files&sort by the newest
-
-      //Else
-      //alert Error
-
+      const networkId = await web3.eth.net.getId()
+      const networkData = DStorage.networks[networkId]
+      if(networkData){
+         const dstorage = new web3.eth.Contract(DStorage.abi, networkData.address)
+         this.setState({
+            dstorage
+         })
+         const fileCount = await dstorage.methods.fileCount().call()
+         this.setState({fileCount})
+         for(var i = fileCount;  i >= 1; i++){
+            const file = await dstorage.methods.files(i).call()
+            this.setState({
+               files: [...this.state.files, file]
+            })
+         }
+      }else{
+         window.alert('DStorage contract not deployed to detected network.')
+      }
+      this.setState({
+         loading: false
+      })
    }
 
    // Get file from user
@@ -73,6 +80,7 @@ class App extends Component {
    constructor(props) {
       super(props)
       this.state = {
+         loading: true
       }
 
       //Bind functions

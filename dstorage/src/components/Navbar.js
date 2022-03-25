@@ -26,7 +26,8 @@ class Navbar extends Component {
                         rel='noopener noreferrer'
                         href={`https://etherscan.io/address/` + this.props.account}
                      >
-                        {this.props.account.substring(0, 6)}...{this.props.account.substring(38, 42)}
+                        {this.props.account ? 
+                           `${this.props.account.substring(0, 6)}...${this.props.account.substring(38, 42)}` : '0x0'}
                      </a>
                   </small>
                   {this.props.account && 

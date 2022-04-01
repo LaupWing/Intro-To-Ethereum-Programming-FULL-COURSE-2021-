@@ -24,7 +24,28 @@ class Main extends Component {
                               this.props.uploadFile(description)
                            }}
                         >
-                           <div className="form-group"></div>
+                           <div className="form-group">
+                              <br />
+                              <input 
+                                 type="text" 
+                                 id='fileDescription'
+                                 ref={(input)=> {this.fileDescription = input}}
+                                 className='form-control text-monospace'
+                                 placeholder='description...'
+                                 required
+                              />
+                           </div>
+                           <input 
+                              type="file" 
+                              onChange={this.props.captureFile}
+                              className='text-white text-monospace'
+                           />
+                           <button
+                              type='submit'
+                              className='btn-primary btn-block'
+                           >
+                              <b>Upload!</b>
+                           </button>
                         </form>
                      </div>
                      <p>&nbsp;</p>
